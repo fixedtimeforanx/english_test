@@ -1,1 +1,579 @@
 # english_test
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bài test CEFR (A2–B1) — Trắc nghiệm 36 câu + Study Plan</title>
+  <style>
+    :root{
+      --bg:#0f172a; --card:#111827; --ink:#e5e7eb; --muted:#9ca3af; --brand:#22c55e; --accent:#38bdf8; --wrong:#ef4444; --right:#22c55e;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";background:var(--bg);color:var(--ink);line-height:1.55}
+    header{padding:20px 16px;border-bottom:1px solid #1f2937;position:sticky;top:0;background:rgba(15,23,42,.9);backdrop-filter:saturate(1.2) blur(6px);z-index:10}
+    .wrap{max-width:980px;margin:0 auto;padding:20px 16px 56px}
+    .card{background:var(--card);border:1px solid #1f2937;border-radius:14px;padding:18px;margin:14px 0}
+    .row{display:flex;gap:14px;flex-wrap:wrap}
+    .grow{flex:1}
+    .btn{display:inline-flex;align-items:center;gap:8px;background:#0b6; border:0;border-radius:12px;padding:10px 14px;color:white;cursor:pointer;font-weight:600}
+    .btn.secondary{background:#374151}
+    .btn.ghost{background:transparent;border:1px solid #334155;color:var(--ink)}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .kicker{color:var(--muted);font-size:14px}
+    .title{font-size:22px;margin:0 0 6px}
+    .muted{color:var(--muted)}
+    .progress{height:10px;background:#0b1220;border-radius:999px;overflow:hidden}
+    .progress>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#5eead4);width:0%}
+    .qnum{font-weight:700;color:#93c5fd}
+    .opt{display:block;border:1px solid #374151;border-radius:12px;padding:10px;margin:10px 0;cursor:pointer}
+    .opt:hover{border-color:#4b5563;background:#0b1220}
+    .opt input{margin-right:8px;transform:translateY(1px)}
+    .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;background:#1f2937;color:#93c5fd;border:1px solid #334155}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:820px){.grid{grid-template-columns:1.1fr .9fr}}
+    .passage{padding:14px;border:1px dashed #334155;border-radius:10px;background:#0b1220}
+    .answer.ok{border-color:#194d32;background:rgba(16,185,129,.08)}
+    .answer.bad{border-color:#4d1a1a;background:rgba(239,68,68,.08)}
+    .tag{font-size:12px;padding:2px 8px;border-radius:16px;border:1px solid #334155;color:#cbd5e1}
+    .tag.grammar{background:#1b3a2a}
+    .tag.vocab{background:#2a1b3a}
+    .tag.reading{background:#1b2a3a}
+    .subtle{opacity:.95}
+    .small{font-size:13px}
+    details summary{cursor:pointer}
+    code.k{background:#0b1220;color:#93c5fd;padding:2px 6px;border-radius:6px;border:1px solid #233046;font-family:ui-monospace,Menlo,Consolas,monospace}
+    .footer-note{font-size:12.5px;color:#9ca3af}
+    .right{color:var(--right)}
+    .wrong{color:var(--wrong)}
+    .chip{display:inline-block;background:#0b1220;border:1px solid #233046;border-radius:999px;padding:4px 10px;margin:2px 6px 2px 0}
+    .hl{color:#a7f3d0}
+    .level-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:#64748b;border:1px solid #334155}
+    .level-A1{background:#ef4444}.level-A2{background:#f59e0b}.level-B1{background:#22c55e}.level-B1plus{background:#10b981}.level-B2{background:#06b6d4}
+    .linklike{color:#7dd3fc;text-decoration:underline;cursor:pointer}
+  </style>
+</head>
+<body>
+<header class="wrap">
+  <div class="row" style="align-items:center;justify-content:space-between">
+    <div>
+      <div class="kicker">CEFR placement (internal) — A2–B1 focus</div>
+      <h1 style="margin:4px 0 0">Bài test tiếng Anh lớp 7 — 36 câu trắc nghiệm + Kế hoạch học tập tự động</h1>
+    </div>
+    <div class="row">
+      <button id="btnReset" class="btn ghost" title="Xóa đáp án đã lưu">Xóa lưu</button>
+      <button id="btnPrint" class="btn secondary" title="In kết quả & kế hoạch">In kế hoạch</button>
+    </div>
+  </div>
+  <div style="margin-top:10px" class="row">
+    <div class="grow progress"><span id="bar"></span></div>
+    <div class="pill"><span id="countDone">0</span>/36</div>
+    <div class="pill">Thời gian: <span id="timer">00:00</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="intro" class="card">
+    <h2 class="title">Hướng dẫn nhanh</h2>
+    <ul class="muted">
+      <li>36 câu trắc nghiệm A–D; nhấn “Nộp bài” để xem điểm, bậc CEFR nội bộ và lời giải từng câu.</li>
+      <li>Phân tích theo mảng kỹ năng (Grammar/Vocabulary/Reading) và phát sinh “study plan + schedule tuần”. Điều chỉnh “giờ học/tuần” để xem số tuần cần thiết lên bậc tiếp theo.</li>
+      <li>Dùng trên máy tính hoặc điện thoại; hệ thống tự lưu tiến độ trên trình duyệt.</li>
+    </ul>
+    <button id="btnStart" class="btn">Bắt đầu làm bài</button>
+  </section>
+
+  <section id="quizArea" class="card" style="display:none">
+    <div class="grid">
+      <div>
+        <h3 class="title">Câu hỏi</h3>
+        <div id="questionHost"></div>
+        <div class="row" style="justify-content:space-between;margin-top:12px">
+          <button class="btn secondary" id="prevBtn">⬅ Trước</button>
+          <div class="row">
+            <button class="btn ghost" id="saveBtn">Lưu tạm</button>
+            <button class="btn" id="nextBtn">Tiếp ➡</button>
+          </div>
+        </div>
+      </div>
+      <aside>
+        <h3 class="title">Tóm tắt</h3>
+        <div id="miniMap" class="row" style="gap:6px;flex-wrap:wrap"></div>
+        <div class="card" style="margin:10px 0">
+          <div class="row" style="justify-content:space-between;align-items:center">
+            <div>
+              <div class="kicker">Giờ học/tuần (để ước lượng thời gian nâng bậc)</div>
+              <input type="range" id="hrsWeek" min="2" max="12" step="1" value="5" />
+              <div><span class="pill"><span id="hrsWeekVal">5</span> giờ/tuần</span></div>
+            </div>
+            <button id="submitBtn" class="btn">Nộp bài</button>
+          </div>
+        </div>
+        <details>
+          <summary>Gợi ý làm bài</summary>
+          <ul class="small muted">
+            <li>Đọc kỹ đề, gạch chân từ khóa; với Reading, đọc câu hỏi trước rồi mới quét đoạn văn.</li>
+            <li>Không chắc thì loại trừ; đừng bỏ trống — khoanh đáp án tốt nhất.</li>
+          </ul>
+        </details>
+      </aside>
+    </div>
+  </section>
+
+  <section id="resultArea" class="card" style="display:none">
+    <h2 class="title">Kết quả & phân tích</h2>
+    <div id="scoreBanner" class="card" style="border-style:solid"></div>
+    <div class="grid">
+      <div>
+        <h3 class="title">Lời giải từng câu</h3>
+        <div id="answersHost"></div>
+      </div>
+      <aside>
+        <h3 class="title">Kế hoạch học tập (tự động)</h3>
+        <div id="planHost" class="card"></div>
+        <div class="card footer-note">
+          <b>Ghi chú CEFR (đọc trước khi dùng điểm để xếp lớp):</b>
+          <ul>
+            <li>Điểm bài test này được “gắn” tạm thời với các bậc CEFR để phân lớp nội bộ; để liên kết chính thức cần quy trình <i>linking/standard setting</i> theo Sổ tay CEFR. Xem CEFR Global scale và Manual. Nguồn ở mục “Nguồn tham khảo”.</li>
+          </ul>
+        </div>
+        <div class="card footer-note">
+          <b>Nguồn học khuyến nghị (miễn phí, phù hợp A2–B1):</b>
+          <ul>
+            <li>British Council — LearnEnglish Teens (đọc, ngữ pháp, từ vựng, tips).</li>
+            <li>VOA Learning English (tin tức chậm, podcast, transcript — tốt cho Listening/Reading). </li>
+            <li>BBC Learning English — 6 Minute English (podcast 6 phút + transcript).</li>
+            <li>Oxford 3000/5000 (danh sách từ cốt lõi theo CEFR) + Cambridge Learner’s Dictionary (tra nghĩa B1). </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ====== Data: Passages ====== */
+const passages = {
+  p1: {
+    title: "Văn bản 1 — Thông báo (A2)",
+    html: `
+    <div class="passage">
+      <b>School Notice: Science Museum Trip — Saturday, May 18</b><br>
+      • Meet at the school gate at 8:20 a.m.; the bus leaves at 8:30 a.m.<br>
+      • Bring a packed lunch, a water bottle, and comfortable shoes.<br>
+      • Fee: 120,000 VND per student (covers ticket and bus).<br>
+      • We will return to school at about 4:00 p.m.<br>
+      • Sign up in Room 205 by Wednesday, May 10. A permission slip signed by a parent is required.<br>
+      • Open to Grade 7 and 8 students only.
+    </div>`
+  },
+  p2: {
+    title: "Văn bản 2 — Email (A2–B1)",
+    html: `
+    <div class="passage">
+      <b>Subject: New school update</b><br>
+      Hi Mai,<br>
+      I started at River Park Middle School last week. The campus is bigger than my old one, so I still get lost sometimes! My favorite class so far is history because the teacher tells great stories. On Tuesdays and Thursdays, I stay after school for the soccer club. Practice ends at 5:00 p.m., so I catch the 5:15 bus home. I’m trying to manage my time better: I do homework on the bus and finish the rest after dinner. This Friday we’re having a science quiz, so I’m leaving the club early to revise. By the way, our cafeteria started a “Meatless Monday,” which actually tastes better than I expected. Wish me luck! — Liam
+    </div>`
+  },
+  p3: {
+    title: "Văn bản 3 — Bài viết ngắn (B1)",
+    html: `
+    <div class="passage">
+      <b>Growing a Garden, Growing a School</b><br>
+      Two years ago, our school turned a sunny corner of the playground into a small vegetable garden. At first, tomatoes and cucumbers grew unevenly because the soil was poor. The gardening club tested different compost mixes and learned to collect rainwater in barrels. Now the garden supplies herbs to the cooking class once a week, and younger students help weed during break. Teachers say the garden makes science lessons more concrete: when students measure plant height or track insect species, data suddenly has meaning. It has also changed how we work together. Teams rotate jobs—watering, recording, and cleaning tools—so everyone sees that progress depends on small, regular efforts. The garden is not perfect: during exams, fewer volunteers show up, and heat waves mean we sometimes lose plants. Even so, standing among the leaves after a long day feels like a quiet reward, and many students say the space helps them relax before heading back to class.
+    </div>`
+  }
+};
+
+/* ====== Data: Questions ====== */
+const questions = [
+  // Grammar 1–12
+  {id:1, topic:"Grammar", text:"My brother ____ to school by bus.", opts:["go","goes","is go","going"], ans:"B",
+   exp:"Chủ ngữ ngôi thứ ba số ít (he/she/it) ở hiện tại đơn thêm -s/-es → goes."},
+  {id:2, topic:"Grammar", text:"Listen! The teacher ____ to us now.", opts:["talks","is talking","talked","will talk"], ans:"B",
+   exp:"Có tín hiệu now/Listen! → hiện tại tiếp diễn: is talking."},
+  {id:3, topic:"Grammar", text:"We ____ a movie last night.", opts:["see","sees","saw","seeing"], ans:"C",
+   exp:"Có mốc thời gian quá khứ ‘last night’ → thì quá khứ đơn: saw."},
+  {id:4, topic:"Grammar", text:"How ____ sugar do you take in your tea?", opts:["much","many","a few","several"], ans:"A",
+   exp:"Sugar là danh từ không đếm được → how much."},
+  {id:5, topic:"Grammar", text:"This exercise is ____ than that one.", opts:["easyer","more easy","easier","the most easy"], ans:"C",
+   exp:"So sánh hơn của ‘easy’ là ‘easier’ (quy tắc -y → -ier)."},
+  {id:6, topic:"Grammar", text:"I have studied English ____ three years.", opts:["since","for","from","during"], ans:"B",
+   exp:"Khoảng thời gian + for (for three years)."},
+  {id:7, topic:"Grammar", text:"If it ____ tomorrow, we’ll cancel the match.", opts:["rains","will rain","rained","is raining"], ans:"A",
+   exp:"Câu điều kiện loại 1: If + present simple, will + V → rains."},
+  {id:8, topic:"Grammar", text:"I ____ my homework when the lights ____.", opts:["did / go out","was doing / went out","was doing / were going out","do / went out"], ans:"B",
+   exp:"Quá khứ tiếp diễn (hành động đang xảy ra) + quá khứ đơn (hành động xen vào): was doing / went out."},
+  {id:9, topic:"Grammar", text:"You look tired. You ____ go to bed earlier.", opts:["can","should","mustn’t","might"], ans:"B",
+   exp:"Khuyên nhủ → should."},
+  {id:10, topic:"Grammar", text:"____ your parents like spicy food?", opts:["Do","Does","Are","Did"], ans:"A",
+   exp:"‘Parents’ là số nhiều → Do your parents..."},
+  {id:11, topic:"Grammar", text:"That’s the shop ____ I bought my notebook.", opts:["what","which","where","who"], ans:"C",
+   exp:"Mệnh đề quan hệ chỉ nơi chốn → where."},
+  {id:12, topic:"Grammar", text:"He enjoys ____ basketball after school.", opts:["play","playing","to play","plays"], ans:"B",
+   exp:"Sau ‘enjoy’ dùng V‑ing → playing."},
+
+  // Vocabulary 13–20
+  {id:13, topic:"Vocabulary", text:"Please ____ the lights when you leave the room.", opts:["turn on","turn off","put on","take off"], ans:"B",
+   exp:"Tắt đèn → turn off."},
+  {id:14, topic:"Vocabulary", text:"The movie was hilarious. “Hilarious” is closest in meaning to ____. ", opts:["very boring","very funny","very scary","very long"], ans:"B",
+   exp:"‘Hilarious’ = ‘very funny’."},
+  {id:15, topic:"Vocabulary", text:"My mom is good ____ cooking Vietnamese food.", opts:["for","in","at","on"], ans:"C",
+   exp:"Cấu trúc ‘be good at + V‑ing/N’ → good at cooking."},
+  {id:16, topic:"Vocabulary", text:"Lan wants to be a ____ when she grows up.", opts:["scientific","scientist","science","scientifically"], ans:"B",
+   exp:"Danh từ chỉ người: scientist."},
+  {id:17, topic:"Vocabulary", text:"We need to ____ an idea for the school project.", opts:["come around","come up with","come up to","come across"], ans:"B",
+   exp:"‘Come up with’ = nảy ra/đề xuất (ý tưởng)."},
+  {id:18, topic:"Vocabulary", text:"I am looking forward ____ your reply.", opts:["for","to","at","with"], ans:"B",
+   exp:"‘look forward to’ + danh từ/V‑ing → to your reply."},
+  {id:19, topic:"Vocabulary", text:"The coach told us to “warm up” before running. That means ____. ", opts:["rest","run slowly to prepare","drink more water","stop training"], ans:"B",
+   exp:"‘warm up’ = khởi động (chạy chậm để làm nóng)."},
+  {id:20, topic:"Vocabulary", text:"At a restaurant, how do you politely ask for the bill?", opts:["Give me the bill.","I want to pay now.","Could we have the bill, please?","Money, now."], ans:"C",
+   exp:"Cách lịch sự: ‘Could we have the bill, please?’"},
+
+  // Reading 21–26 (p1)
+  {id:21, topic:"Reading", passage:"p1", text:"What is the main purpose of the notice?", opts:["Invite parents to volunteer","Give details about a museum trip","Announce a new club","Cancel a trip"], ans:"B",
+   exp:"Thông báo cung cấp chi tiết chuyến đi bảo tàng (thời gian, mang gì, phí...)."},
+  {id:22, topic:"Reading", passage:"p1", text:"What time does the bus leave?", opts:["8:20 a.m.","8:30 a.m.","4:00 p.m.","10:30 a.m."], ans:"B",
+   exp:"Dòng 1: ‘bus leaves at 8:30 a.m.’"},
+  {id:23, topic:"Reading", passage:"p1", text:"What do students need to bring?", opts:["Money only","School uniform only","A packed lunch and water","Cameras and laptops"], ans:"C",
+   exp:"Dòng 2: Bring a packed lunch and a water bottle."},
+  {id:24, topic:"Reading", passage:"p1", text:"Where should students sign up?", opts:["Online","Library","Room 205","At the museum"], ans:"C",
+   exp:"Dòng ‘Sign up in Room 205’."},
+  {id:25, topic:"Reading", passage:"p1", text:"Who can join the trip?", opts:["Any student","Grade 7 and 8 students only","Grade 8 students only","Science Club leaders only"], ans:"B",
+   exp:"Dòng cuối: Open to Grade 7 and 8 students only."},
+  {id:26, topic:"Reading", passage:"p1", text:"When is the sign‑up deadline?", opts:["Wednesday, May 10","Saturday, May 18","Friday, May 12","Monday, May 8"], ans:"A",
+   exp:"‘Sign up ... by Wednesday, May 10.’"},
+
+  // Reading 27–31 (p2)
+  {id:27, topic:"Reading", passage:"p2", text:"What is the main purpose of the email?", opts:["To complain about the new school","To share news about starting at a new school","To invite Mai to a party","To ask for money"], ans:"B",
+   exp:"Email kể về trường mới, CLB bóng đá, lịch học, quiz khoa học."},
+  {id:28, topic:"Reading", passage:"p2", text:"On which days does Liam have soccer practice?", opts:["Monday and Wednesday","Tuesday and Thursday","Friday only","Saturday and Sunday"], ans:"B",
+   exp:"‘On Tuesdays and Thursdays, I stay after school for the soccer club.’"},
+  {id:29, topic:"Reading", passage:"p2", text:"What time does Liam usually go home after practice?", opts:["4:30 p.m.","5:00 p.m.","5:15 p.m.","6:00 p.m."], ans:"C",
+   exp:"Practice ends 5:00 → bắt xe bus 5:15 về nhà."},
+  {id:30, topic:"Reading", passage:"p2", text:"Why is Liam leaving the club early this Friday?", opts:["He is injured","He has a family trip","He has a science quiz to study for","He wants to meet Mai"], ans:"C",
+   exp:"‘This Friday ... leaving the club early to revise (for the science quiz).’"},
+  {id:31, topic:"Reading", passage:"p2", text:"Which statement is true about the cafeteria?", opts:["It serves meat every Monday","It started “Meatless Monday” and he likes it more than expected","It is closed on Mondays","It only sells snacks"], ans:"B",
+   exp:"‘our cafeteria started a “Meatless Monday,” which actually tastes better than I expected.’"},
+
+  // Reading 32–36 (p3)
+  {id:32, topic:"Reading", passage:"p3", text:"What is the main idea of the article?", opts:["The school plans to build a new playground","The garden improves learning and community, despite challenges","Gardening is too hard for students","The garden only provides food for the cafeteria"], ans:"B",
+   exp:"Bài viết nêu lợi ích học tập/xã hội dù có khó khăn."},
+  {id:33, topic:"Reading", passage:"p3", text:"Which problem did the club face at the beginning?", opts:["Not enough sunlight","Poor soil leading to uneven growth","Too many volunteers","Lack of water because barrels leaked"], ans:"B",
+   exp:"‘grew unevenly because the soil was poor.’"},
+  {id:34, topic:"Reading", passage:"p3", text:"How does the garden help science lessons?", opts:["Students memorize more vocabulary","Students draw pictures of vegetables","Students collect real data that feels meaningful","Students watch gardening videos"], ans:"C",
+   exp:"‘measure plant height ... data suddenly has meaning.’"},
+  {id:35, topic:"Reading", passage:"p3", text:"What is the author’s attitude toward the garden?", opts:["Negative and disappointed","Neutral and bored","Positive but realistic","Angry and critical"], ans:"C",
+   exp:"Công nhận lợi ích nhưng thừa nhận hạn chế (thi, nắng nóng)."},
+  {id:36, topic:"Reading", passage:"p3", text:"Which statement is NOT mentioned in the article?", opts:["The garden supplies herbs to a cooking class","Teams rotate jobs like watering and recording","The school sells vegetables at a local market","Heat waves sometimes kill plants"], ans:"C",
+   exp:"Không nhắc việc bán rau ngoài chợ."}
+];
+
+/* ====== State ====== */
+let idx = 0;
+let user = {}; // { qid: "A"/"B"/... }
+let startedAt = null;
+let timerInt = null;
+
+const els = {
+  intro: document.getElementById('intro'),
+  quiz: document.getElementById('quizArea'),
+  res: document.getElementById('resultArea'),
+  qHost: document.getElementById('questionHost'),
+  aHost: document.getElementById('answersHost'),
+  planHost: document.getElementById('planHost'),
+  bar: document.getElementById('bar'),
+  countDone: document.getElementById('countDone'),
+  miniMap: document.getElementById('miniMap'),
+  timer: document.getElementById('timer'),
+  hrsRange: document.getElementById('hrsWeek'),
+  hrsVal: document.getElementById('hrsWeekVal')
+};
+
+/* ====== Helpers ====== */
+const byId = id => questions.find(q=>q.id===id);
+const answeredCount = () => Object.keys(user).length;
+const pct = v => Math.round(v*100);
+
+function save() {
+  localStorage.setItem("cefr7:user", JSON.stringify(user));
+}
+function load() {
+  const raw = localStorage.getItem("cefr7:user");
+  if(raw){ user = JSON.parse(raw) || {}; }
+}
+function fmtTime(sec) {
+  const m = Math.floor(sec/60).toString().padStart(2,"0");
+  const s = (sec%60).toString().padStart(2,"0");
+  return `${m}:${s}`;
+}
+
+function renderMini(){
+  els.miniMap.innerHTML = "";
+  questions.forEach(q=>{
+    const b = document.createElement('button');
+    b.className = "btn ghost small";
+    b.style.padding="6px 10px";
+    const picked = user[q.id] || "—";
+    b.innerHTML = `<span class="qnum">#${q.id}</span> <span class="muted">(${q.topic[0]})</span> <b>${picked}</b>`;
+    if(user[q.id]) b.style.borderColor = "#475569";
+    b.onclick = ()=>{ idx = q.id-1; renderQuestion(); };
+    els.miniMap.appendChild(b);
+  });
+}
+
+function renderQuestion(){
+  const q = questions[idx];
+  const total = questions.length;
+  const p = ((answeredCount())/total)*100;
+  els.bar.style.width = `${p}%`;
+  els.countDone.textContent = answeredCount();
+
+  // Build HTML
+  let html = "";
+  if(q.passage){
+    const pass = passages[q.passage];
+    html += `<div class="muted small"><span class="tag reading">Reading</span> ${pass.title}</div>${pass.html}`;
+  } else {
+    html += `<div class="muted small"><span class="tag ${q.topic.toLowerCase()}">${q.topic}</span></div>`;
+  }
+  html += `<h3><span class="qnum">Câu ${q.id}</span> — ${q.text}</h3>`;
+  q.opts.forEach((o,i)=>{
+    const key = String.fromCharCode(65+i);
+    const checked = (user[q.id]===key) ? "checked" : "";
+    html += `<label class="opt"><input type="radio" name="q${q.id}" value="${key}" ${checked}/> <b>${key}.</b> ${o}</label>`;
+  });
+  els.qHost.innerHTML = html;
+
+  // Wire events
+  els.qHost.querySelectorAll(`input[name="q${q.id}"]`).forEach(inp=>{
+    inp.onchange = (e)=>{ user[q.id] = e.target.value; save(); renderMini(); };
+  });
+
+  // Nav buttons
+  document.getElementById('prevBtn').disabled = (idx===0);
+  document.getElementById('nextBtn').disabled = (idx===total-1);
+}
+
+function computeScores(){
+  let correct = 0, wrong=0;
+  let buckets = {Grammar:{correct:0,total:0}, Vocabulary:{correct:0,total:0}, Reading:{correct:0,total:0}};
+  let detail = [];
+  questions.forEach(q=>{
+    buckets[q.topic].total++;
+    const pick = user[q.id] || null;
+    const ok = (pick===q.ans);
+    if(ok){ correct++; buckets[q.topic].correct++; } else { wrong++; }
+    detail.push({id:q.id, topic:q.topic, pick, correct:ok, ans:q.ans, exp:q.exp, text:q.text, passage:q.passage});
+  });
+  const total = questions.length;
+  return {correct, wrong, total, buckets, detail};
+}
+
+function inferLevel(score){
+  // Mapping for this 36Q test (internal placement only)
+  // 0–12: A1 | 13–23: A2 | 24–30: B1 | 31–36: B1+
+  if(score<=12) return {code:"A1", label:"A1 (Beginner)"};
+  if(score<=23) return {code:"A2", label:"A2 (Elementary)"};
+  if(score<=30) return {code:"B1", label:"B1 (Intermediate)"};
+  return {code:"B1+", label:"B1+ (vững, cận B2)"};
+}
+
+function nextTarget(level){
+  if(level==="A1") return "A2";
+  if(level==="A2") return "B1";
+  if(level==="B1" || level==="B1+") return "B2";
+  return "B1";
+}
+
+function estimateWeeks(hrsPerWeek){
+  const HOURS_PER_LEVEL = 200; // Cambridge GLH guideline
+  return Math.ceil(HOURS_PER_LEVEL / Math.max(hrsPerWeek,2));
+}
+
+function makePlan(scores, hrsPerWeek){
+  const lvl = inferLevel(scores.correct);
+  const target = nextTarget(lvl.code);
+  const weeks = estimateWeeks(hrsPerWeek);
+
+  // Weights by weakness
+  const acc = {};
+  Object.entries(scores.buckets).forEach(([k,v])=>{
+    acc[k] = v.total ? v.correct/v.total : 0;
+  });
+  const sorted = Object.keys(acc).sort((a,b)=>acc[a]-acc[b]); // weakest first
+  const weights = {};
+  // 3-way split: 0.4 (weakest), 0.35 (middle), 0.25 (strongest)
+  weights[sorted[0]] = 0.40; weights[sorted[1]] = 0.35; weights[sorted[2]] = 0.25;
+
+  const totalMin = hrsPerWeek*60;
+  const alloc = {};
+  Object.keys(weights).forEach(k=> alloc[k] = Math.round(totalMin*weights[k]));
+  const sess = (mins, block=25)=> Math.max(1, Math.round(mins/block));
+
+  const lines = [];
+  lines.push(`<div class="muted">Bậc hiện tại (ước lượng): <span class="chip"><span class="level-dot level-${lvl.code.replace('+','plus')}"></span><b>${lvl.label}</b></span> • Mục tiêu kế tiếp: <span class="chip"><b>${target}</b></span></div>`);
+  lines.push(`<div class="muted">Bạn đặt <b>${hrsPerWeek} giờ/tuần</b> → cần khoảng <b>${weeks} tuần</b> để tăng 1 bậc (ước lượng theo ~200 giờ học có hướng dẫn/CEFR-level).</div>`);
+  lines.push(`<hr style="border-color:#233046">`);
+  lines.push(`<b>Phân bổ thời gian/tuần theo điểm yếu:</b>`);
+  lines.push(`<div class="small">• Grammar: ~${alloc.Grammar} phút (${pct(weights.Grammar)}%) → khoảng ${sess(alloc.Grammar)} buổi × 25’<br>
+                     • Vocabulary: ~${alloc.Vocabulary} phút (${pct(weights.Vocabulary)}%) → khoảng ${sess(alloc.Vocabulary)} buổi × 20–25’<br>
+                     • Reading: ~${alloc.Reading} phút (${pct(weights.Reading)}%) → khoảng ${sess(alloc.Reading,30)} buổi × 30’</div>`);
+  lines.push(`<hr style="border-color:#233046">`);
+  lines.push(`<b>Lịch mẫu 1 tuần:</b>
+    <ol class="small">
+      <li>Mon: Grammar (25’)&nbsp;•&nbsp;Vocab SRS (15’)&nbsp;•&nbsp;Reading ngắn (15’)</li>
+      <li>Tue: Reading (30’)&nbsp;•&nbsp;Vocab SRS (15’)&nbsp;•&nbsp;Nghe podcast dễ (10’)</li>
+      <li>Wed: Grammar (25’)&nbsp;•&nbsp;Ôn sai (10’)&nbsp;•&nbsp;Reading (15’)</li>
+      <li>Thu: Vocab theo chủ đề (20’)&nbsp;•&nbsp;Nghe + transcript (15’)</li>
+      <li>Fri: Mini‑test 10 câu (15’)&nbsp;•&nbsp;Sửa lỗi (15’)</li>
+      <li>Sat: Reading dài (30’)&nbsp;•&nbsp;Ghi từ/cụm mới từ Oxford 3000/5000 (15’)</li>
+      <li>Sun: Nghỉ hoặc ôn nhẹ 15’ (flashcards + xem lại lỗi khó)</li>
+    </ol>`);
+
+  // Resource suggestions depending on weakness
+  function resGrammar(){
+    return `<ul class="small">
+      <li>British Council — mục Grammar (Teens): bài ngắn + bài tập tương tác.</li>
+      <li>Sổ tay lỗi cá nhân: ghi 5 lỗi ngữ pháp/tuần từ phần “Ôn sai”.</li>
+    </ul>`;
+  }
+  function resVocab(){
+    return `<ul class="small">
+      <li>Oxford 3000/5000 (từ cốt lõi theo CEFR) → tạo flashcards; tra ví dụ ở Cambridge Learner’s Dictionary.</li>
+      <li>Ôn theo cụm: collocations chủ đề trường học/thể thao/thời tiết.</li>
+    </ul>`;
+  }
+  function resReading(){
+    return `<ul class="small">
+      <li>VOA Learning English (chọn mục Beginning/Intermediate): đọc kèm audio + transcript.</li>
+      <li>BBC Learning English — 6 Minute English: nghe 6’ rồi làm quiz kèm transcript.</li>
+    </ul>`;
+  }
+
+  lines.push(`<hr style="border-color:#233046">`);
+  lines.push(`<b>Gợi ý tài nguyên theo điểm yếu</b>`);
+  sorted.forEach((k,i)=>{
+    const head = `${i===0?'Điểm yếu nhất':'Cần củng cố'} — <span class="hl">${k}</span>`;
+    const body = k==="Grammar" ? resGrammar() : (k==="Vocabulary" ? resVocab() : resReading());
+    lines.push(`<div class="card" style="margin:8px 0"><div><b>${head}</b></div>${body}</div>`);
+  });
+
+  // 8-week milestones
+  lines.push(`<hr style="border-color:#233046">`);
+  lines.push(`<b>Mốc 8 tuần (theo dõi tiến bộ)</b>
+    <ul class="small">
+      <li>Tuần 1–2: Ổn định thói quen • hoàn tất 6–8 bài Grammar (A2–B1) + 200–300 từ Oxford 3000.</li>
+      <li>Tuần 3–4: Reading 6–8 bài (kèm audio) • mini‑test 20 câu mỗi tuần (tự tạo từ ngân hàng câu hỏi sai).</li>
+      <li>Tuần 5–6: Tăng tốc Vocabulary theo chủ đề • nghe 10 tập 6 Minute English.</li>
+      <li>Tuần 7–8: Mock test lại 36 câu • so sánh điểm theo mảng; điều chỉnh tỉ lệ thời gian.</li>
+    </ul>`);
+
+  return lines.join("");
+}
+
+/* ====== Render Results ====== */
+function renderResults(){
+  const scores = computeScores();
+  const lvl = inferLevel(scores.correct);
+  const hrs = parseInt(els.hrsRange.value,10);
+  const weeks = estimateWeeks(hrs);
+
+  // Banner
+  const g = scores.buckets.Grammar, v = scores.buckets.Vocabulary, r = scores.buckets.Reading;
+  const rate = (x)=> `${x.correct}/${x.total} (${pct(x.correct/x.total)}%)`;
+  document.getElementById('scoreBanner').innerHTML = `
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <div>
+        <div class="kicker">Tổng điểm</div>
+        <h3 style="margin:6px 0"><span class="chip"><b>${scores.correct}/${scores.total}</b> đúng</span>
+            &nbsp;•&nbsp;<span class="chip"><span class="level-dot level-${lvl.code.replace('+','plus')}"></span><b>${lvl.label}</b></span></h3>
+        <div class="muted small">
+          Grammar: <b>${rate(g)}</b> • Vocabulary: <b>${rate(v)}</b> • Reading: <b>${rate(r)}</b>
+        </div>
+      </div>
+      <div class="muted small">
+        Ước lượng thời gian tăng 1 bậc (với ${hrs} giờ/tuần): <b>~${weeks} tuần</b>
+        <div class="footer-note">Gốc tính theo ~200 giờ học/CEFR-level (Cambridge GLH).</div>
+      </div>
+    </div>
+  `;
+
+  // Answers + explanations
+  const host = els.aHost;
+  host.innerHTML = "";
+  scores.detail.forEach(d=>{
+    const block = document.createElement('div');
+    block.className="card answer " + (d.correct ? "ok":"bad");
+    const passHead = d.passage ? `<div class="muted small">${passages[d.passage].title}</div>` : "";
+    block.innerHTML = `
+      ${passHead}
+      <div><span class="tag ${d.topic.toLowerCase()}">${d.topic}</span> 
+           <b>Câu ${d.id}.</b> ${d.text}</div>
+      <div style="margin-top:6px" class="small">
+        Bạn chọn: <b class="${d.correct?'right':'wrong'}">${d.pick || '—'}</b> • 
+        Đáp án đúng: <b class="right">${d.ans}</b>
+      </div>
+      <div class="muted small" style="margin-top:6px"><b>Giải thích:</b> ${d.exp}</div>
+    `;
+    host.appendChild(block);
+  });
+
+  // Plan
+  els.planHost.innerHTML = makePlan(scores, parseInt(els.hrsRange.value,10));
+}
+
+/* ====== Wire UI ====== */
+document.getElementById('btnStart').onclick = ()=>{
+  els.intro.style.display="none"; els.quiz.style.display="block";
+  startedAt = Date.now();
+  timerInt = setInterval(()=>{
+    const sec = Math.floor((Date.now()-startedAt)/1000);
+    els.timer.textContent = fmtTime(sec);
+  },1000);
+  renderMini(); renderQuestion();
+};
+document.getElementById('nextBtn').onclick = ()=>{ if(idx<questions.length-1){ idx++; renderQuestion(); } };
+document.getElementById('prevBtn').onclick = ()=>{ if(idx>0){ idx--; renderQuestion(); } };
+document.getElementById('submitBtn').onclick = ()=>{
+  if(answeredCount()<questions.length){
+    if(!confirm("Bạn chưa trả lời hết câu hỏi. Nộp bài luôn?")) return;
+  }
+  clearInterval(timerInt);
+  els.quiz.style.display="none"; els.res.style.display="block";
+  renderResults();
+  // scroll to top
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+document.getElementById('saveBtn').onclick = ()=>{ save(); alert("Đã lưu đáp án tạm thời trên trình duyệt."); };
+document.getElementById('btnReset').onclick = ()=>{
+  if(confirm("Xóa đáp án đã lưu và làm lại từ đầu?")){
+    localStorage.removeItem("cefr7:user"); user={}; idx=0; location.reload();
+  }
+};
+document.getElementById('btnPrint').onclick = ()=> window.print();
+
+els.hrsRange.oninput = (e)=>{ els.hrsVal.textContent = e.target.value; if(els.res.style.display!=="none") renderResults(); };
+
+// Load saved state if any
+load();
+if(Object.keys(user).length>0){
+  els.intro.insertAdjacentHTML('beforeend', `<div class="footer-note">Đã tìm thấy đáp án lưu trước đó — nhấn “Bắt đầu làm bài” để tiếp tục.</div>`);
+}
+
+</script>
+
+<footer class="wrap footer-note">
+  <hr style="border-color:#233046">
+  <p><b>Nguồn tham khảo & ghi chú trong site:</b></p>
+  <ul>
+    <li>CEFR Global scale & mô tả 6 bậc A1–C2; dùng để mô tả năng lực nghe‑nói‑đọc‑viết. Ghi chú linking theo Manual khi quy đổi điểm bài thi sang bậc. </li>
+    <li>Ước lượng thời lượng học: ~200 giờ học có hướng dẫn để tăng 1 bậc CEFR (dùng để tính “số tuần dự kiến” khi người học đặt số giờ/tuần).</li>
+    <li>Tài nguyên gợi ý: British Council — LearnEnglish Teens; VOA Learning English (official); BBC Learning English — 6 Minute English (podcast có transcript); Oxford 3000/5000 (danh sách từ cốt lõi theo CEFR) & Cambridge Learner’s Dictionary.</li>
+  </ul>
+  <p class="small subtle">Bản web này nhằm xếp lớp nội bộ và định hướng học tập; không thay thế các bài đánh giá chuẩn hoá.</p>
+</footer>
+</body>
+</html>
